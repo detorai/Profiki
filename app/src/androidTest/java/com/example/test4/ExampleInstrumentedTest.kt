@@ -1,22 +1,16 @@
 package com.example.test4
 
-import androidx.activity.compose.setContent
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import com.example.test4.ui.theme.Test4Theme
+import com.example.test4.presentation.sign_in.SignInScreen
+import com.example.test4.presentation.sign_in.SignInViewModel
+import io.github.jan.supabase.auth.status.SessionSource
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import org.junit.Assert.*
 import org.junit.Rule
 
 /**
@@ -32,8 +26,10 @@ class ExampleInstrumentedTest {
     @Test
     fun checkDialogBeforeEmptyPassword() {
 
+        val viewModel = SignInViewModel()
+        viewModel.auth("123@123.com", "")
         compose.setContent {
-            SignInScreen().Content()
+            SignInScreen().SignIn(viewModel)
         }
         compose.onNodeWithText("Password is empty").assertIsDisplayed()
     }
@@ -41,10 +37,11 @@ class ExampleInstrumentedTest {
 
     @Test
     fun checkDialogBeforeEmptyEmail() {
-        val screen = SignInScreen()
-        compose.setContent {
-            screen.Content()
 
+        val viewModel = SignInViewModel()
+        viewModel.auth("", "")
+        compose.setContent {
+            SignInScreen().SignIn(viewModel)
         }
         compose.onNodeWithText("Email is empty").assertIsDisplayed()
     }

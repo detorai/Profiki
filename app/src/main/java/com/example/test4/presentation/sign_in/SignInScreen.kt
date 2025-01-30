@@ -1,4 +1,4 @@
-package com.example.test4
+package com.example.test4.presentation.sign_in
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -26,8 +25,12 @@ class SignInScreen(): Screen {
 
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel { ViewModel() }
-        val state = viewModel.state.collectAsState().value
+        val viewModel = rememberScreenModel { SignInViewModel() }
+        SignIn(viewModel)
+    }
+    @Composable
+    fun SignIn(viewModel: SignInViewModel) {
+        val state = viewModel.signInState.collectAsState().value
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -47,32 +50,32 @@ class SignInScreen(): Screen {
                 onValueChange = viewModel::onPassword
             )
             Button(
-              onClick = { viewModel.auth(state.email, state.password) }
+                onClick = { viewModel.auth(state.email, state.password) }
             ) {
 
             }
 
         }
     }
-    @Composable
-    fun CommonErrorDialog(
-        text: String,
-        onDismiss: ()-> Unit
-    ){
-        Dialog(
-            onDismissRequest = onDismiss
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .background(color = Color.White, shape = RoundedCornerShape(16.dp))
-            ){
-                Text(
-                    text
-                )
-            }
+}
+@Composable
+fun CommonErrorDialog(
+    text: String,
+    onDismiss: ()-> Unit
+){
+    Dialog(
+        onDismissRequest = onDismiss
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .background(color = Color.White, shape = RoundedCornerShape(16.dp))
+        ){
+            Text(
+                text
+            )
         }
     }
 }
