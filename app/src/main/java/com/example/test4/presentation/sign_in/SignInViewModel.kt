@@ -5,8 +5,6 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.example.test4.domain.common.ResponseState
 import com.example.test4.domain.sign_in.SignInUseCase
 import com.example.test4.domain.sign_in.request.AuthRequest
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -116,6 +114,7 @@ class SignInViewModel: ScreenModel {
                     is ResponseState.Success<*> -> {
                         signInState.update {
                             signInState.value.copy(isSignIn = true)
+
                         }
                     }
                 }

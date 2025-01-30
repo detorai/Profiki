@@ -16,16 +16,16 @@ class SignInUseCase {
                 result.sessionStatus.collect{status ->
                     when (status) {
                         is SessionStatus.Initializing -> {
-                            ResponseState.Loading()
+                            emit(ResponseState.Loading())
                         }
                         is SessionStatus.RefreshFailure -> {
-                            ResponseState.Error(error = "RefreshFailure")
+                            emit(ResponseState.Error(error = "RefreshFailure"))
                         }
                         is SessionStatus.Authenticated -> {
-                            ResponseState.Success(true)
+                            emit(ResponseState.Success(true))
                         }
                         is SessionStatus.NotAuthenticated -> {
-                            ResponseState.Error(error = "Not Auth")
+                            emit(ResponseState.Error(error = "Not Auth"))
                         }
                     }
                 }
