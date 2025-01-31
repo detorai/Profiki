@@ -78,7 +78,9 @@ class SignInScreen: Screen {
                 CommonLabel(Modifier)
                 CommonText(
                     modifier = Modifier.padding(top = 35.dp),
-                    text = emailString
+                    text = emailString,
+                    state = false,
+                    onTextClick = {}
                 )
                 CommonTextRow(
                     value = state.email,
@@ -90,7 +92,9 @@ class SignInScreen: Screen {
                 )
                 CommonText(
                     modifier = Modifier.padding(top = 26.dp),
-                    text = passwordString
+                    text = passwordString,
+                    state = false,
+                    onTextClick = {}
                 )
                 CommonTextRow(
                     value = state.password,

@@ -72,7 +72,7 @@ dependencies {
     implementation("io.ktor:ktor-client-android:3.0.3")
 
     //Coil
-    implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     //QR
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
