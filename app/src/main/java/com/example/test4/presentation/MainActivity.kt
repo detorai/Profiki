@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.test4.presentation.cat_pop_favour.ListScreen
+import com.example.test4.presentation.cat_pop_favour.ScreenType
 import com.example.test4.presentation.home.HomeScreen
 import com.example.test4.presentation.onboard.OnBoardScreen
 import com.example.test4.presentation.sign_in.SignInScreen

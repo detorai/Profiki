@@ -1,6 +1,7 @@
 package com.example.test4.domain.shoes
 
 import com.example.test4.data.remote_data_source.shoes.ShoesRepository
+import com.example.test4.domain.category.Category
 import com.example.test4.domain.common.ResponseState
 import kotlinx.coroutines.flow.flow
 
@@ -17,7 +18,7 @@ class ShoesUseCase {
                     name = it.Shoes.shoes_name,
                     cost = it.Shoes.shoes_cost,
                     description = it.Shoes.shoes_description,
-                    image = it.Shoes.shoes_url
+                    image = it.Shoes.shoes_url,
                 )
             }
             emit(ResponseState.Success(data = result))

@@ -53,9 +53,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import coil.compose.AsyncImage
 import com.example.test3.presentation.common.CommonText
 import com.example.test4.R
+import com.example.test4.presentation.cat_pop_favour.ListScreen
+import com.example.test4.presentation.cat_pop_favour.ScreenType
 import com.example.test4.presentation.common.CommonMain
 import com.example.test4.presentation.common.CommonSearchBar
 import com.example.test4.presentation.common.CommonShoesCard
@@ -76,6 +80,7 @@ class HomeScreen: Screen {
     @Composable
     fun Home(viewModel: HomeViewModel) {
         val homeState = viewModel.homeState.collectAsState().value
+        val navigator = LocalNavigator.currentOrThrow
         val navigationList = listOf(R.drawable.home_navigation, R.drawable.heart,R.drawable.bag_splash , R.drawable.notif, R.drawable.profile)
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
@@ -170,7 +175,7 @@ class HomeScreen: Screen {
                                         shape = RoundedCornerShape(8.dp)
                                     )
                                     .clickable {
-
+                                        navigator.push(ListScreen(categoryScreen = category, screen = ScreenType.CATEGORY))
                                     },
                                 contentAlignment = Alignment.Center,
                             ) {
@@ -193,7 +198,7 @@ class HomeScreen: Screen {
                     state = true,
                     modifier = Modifier.padding(top = 24.dp),
                     onTextClick = {
-
+                        navigator.push(ListScreen(screen = ScreenType.POPULAR))
                     }
                 )
                 LazyHorizontalGrid(
@@ -229,17 +234,29 @@ class HomeScreen: Screen {
 
                     }
                 )
-                Box(
-                    contentAlignment = Alignment.Center,
+                LazyRow(
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .fillMaxWidth()
-                        .height(95.dp)
                 ) {
-                    AsyncImage(
-                        model = "",
-                        contentDescription = ""
-                    )
+                    itemsIndexed(homeState.sales) { index, sale ->
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(95.dp)
+                                .background(Red)
+                        ) {
+                            AsyncImage(
+                                model = sale.sales_url,
+                                contentDescription = "",
+                                contentScale = ContentScale.FillWidth
+                            )
+                        }
+                        if (index < homeState.sales.size-1) {
+                            Spacer(modifier = Modifier.width(10.dp))
+                        }
+                    }
                 }
             }
             NavigationBar(

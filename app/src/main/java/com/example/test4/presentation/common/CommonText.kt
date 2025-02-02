@@ -48,7 +48,7 @@ fun CommonText(
                 onClick = {offset ->
                     annotatedText.getStringAnnotations(offset,offset).firstOrNull()?.let { annotation ->
                         when (annotation.item){
-                            "clickable" -> {onTextClick}
+                            "clickable" -> {onTextClick()}
                         }
                     }
                 }

@@ -7,6 +7,8 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.example.test4.domain.category.Category
 import com.example.test4.domain.category.CategoryUseCase
 import com.example.test4.domain.common.ResponseState
+import com.example.test4.domain.sales.Sales
+import com.example.test4.domain.sales.SalesUseCase
 import com.example.test4.domain.shoes.Shoes
 import com.example.test4.domain.shoes.ShoesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +21,13 @@ class HomeViewModel: ScreenModel {
     val categoryUseCase = CategoryUseCase()
     val homeState = MutableStateFlow(HomeScreenState())
     val shoesList = mutableStateListOf<Shoes>()
+    val salesUseCase = SalesUseCase()
+
 
     init {
         getAllShoes()
         getAllCategory()
+        getSales()
     }
 
     fun inFavourite(index: Int, state: Boolean){
@@ -30,6 +35,25 @@ class HomeViewModel: ScreenModel {
             shoesList.set(index, shoesList[index].copy(isFavourite = state))
         }
     }
+
+    fun getSales(){
+        screenModelScope.launch {
+            val result = salesUseCase.getSales()
+            result.collect { response ->
+                when (response) {
+                    is ResponseState.Error -> {}
+                    is ResponseState.Success<*> -> {
+                        homeState.update {
+                            it.copy(sales = response.data as List<Sales>)
+                        }
+                    }
+                    is ResponseState.Loading -> {}
+                    is ResponseState.NetworkError -> {}
+                }
+            }
+        }
+    }
+
     private fun getAllCategory() {
         screenModelScope.launch {
             val result = categoryUseCase.getAllCategory()
