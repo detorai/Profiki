@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.test4.R
+import com.example.test4.presentation.cat_pop_favour.ScreenType
 import com.example.test4.presentation.ui.theme.TextColor
 
 @Composable
@@ -18,6 +19,7 @@ fun CommonTopBar(
     onBack: ()-> Unit,
     label: String,
     onFavourite: ()-> Unit,
+    screenType: ScreenType
 ){
     Column(
         verticalArrangement = Arrangement.Top,
@@ -40,10 +42,11 @@ fun CommonTopBar(
                     label,
                     color = TextColor,
                 )
+                if (screenType == ScreenType.POPULAR || screenType ==ScreenType.FAVOURITE )
                 CommonButtonWithIcon(
                     onClick = onFavourite,
                     modifier = Modifier.align(Alignment.CenterEnd),
-                    icon = R.drawable.heart
+                    icon = if (screenType == ScreenType.FAVOURITE) R.drawable.heart_fill else R.drawable.heart
                 )
             }
         }

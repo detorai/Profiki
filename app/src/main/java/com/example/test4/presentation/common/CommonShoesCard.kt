@@ -1,6 +1,5 @@
 package com.example.test4.presentation.common
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,16 +13,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -39,7 +34,7 @@ import com.example.test4.presentation.ui.theme.TextColor
 fun CommonShoesCard(
     onAdd: ()-> Unit,
     onFavourite: ()-> Unit,
-    products: Shoes,
+    shoes: Shoes,
 ){
     Box(
         modifier = Modifier
@@ -58,7 +53,7 @@ fun CommonShoesCard(
             contentAlignment = Alignment.Center
         ){
             Icon(
-                imageVector = ImageVector.vectorResource(if (!products.inBucket) R.drawable.plus else R.drawable.shop_cart ),
+                imageVector = ImageVector.vectorResource(if (!shoes.inBucket) R.drawable.plus else R.drawable.shop_cart ),
                 contentDescription = "",
                 tint = Color.Unspecified
             )
@@ -75,14 +70,14 @@ fun CommonShoesCard(
                 }
         ){
             Icon(
-                imageVector = ImageVector.vectorResource(if (!products.isFavourite) R.drawable.heart else R.drawable.heart_fill),
+                imageVector = ImageVector.vectorResource(if (!shoes.isFavourite) R.drawable.heart else R.drawable.heart_fill),
                 contentDescription = "icon",
                 tint = Color.Unspecified
             )
-            println("card ${products.isFavourite}")
+            println("card ${shoes.isFavourite}")
         }
         AsyncImage(
-            model = products.image,
+            model = shoes.image,
             contentDescription = "",
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -106,7 +101,7 @@ fun CommonShoesCard(
                 color = Accent
             )
             Text(
-                products.name,
+                shoes.name,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W400,
                 lineHeight = 20.sp,
@@ -115,7 +110,7 @@ fun CommonShoesCard(
             )
         }
         Text(
-            products.cost.toString(),
+            shoes.cost.toString(),
             fontSize = 14.sp,
             fontWeight = FontWeight.W400,
             lineHeight = 16.sp,

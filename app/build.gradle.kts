@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.0.0"
-
+    id("com.google.devtools.ksp") version "2.0.0-1.0.24"
 }
 
 android {
@@ -78,10 +78,10 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
     //Room
-//    val room_version = "2.6.1"
-//    ksp("androidx.room:room-compiler:$room_version")
-//    implementation("androidx.room:room-runtime:$room_version")
-//    implementation("androidx.room:room-ktx:$room_version")
+    val room_version = "2.6.1"
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
 

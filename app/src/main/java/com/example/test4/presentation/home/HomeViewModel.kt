@@ -1,5 +1,6 @@
 package com.example.test4.presentation.home
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
@@ -11,13 +12,15 @@ import com.example.test4.domain.sales.Sales
 import com.example.test4.domain.sales.SalesUseCase
 import com.example.test4.domain.shoes.Shoes
 import com.example.test4.domain.shoes.ShoesUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import okhttp3.internal.toImmutableList
 
-class HomeViewModel: ScreenModel {
-    val shoesUseCase = ShoesUseCase()
+class HomeViewModel(private val context: Context): ScreenModel {
+    val shoesUseCase = ShoesUseCase(context)
     val categoryUseCase = CategoryUseCase()
     val homeState = MutableStateFlow(HomeScreenState())
     val shoesList = mutableStateListOf<Shoes>()
@@ -31,8 +34,9 @@ class HomeViewModel: ScreenModel {
     }
 
     fun inFavourite(index: Int, state: Boolean){
-        screenModelScope.launch {
+        screenModelScope.launch(Dispatchers.IO) {
             shoesList.set(index, shoesList[index].copy(isFavourite = state))
+            shoesUseCase.inFavourite(shoesList[index])
         }
     }
 

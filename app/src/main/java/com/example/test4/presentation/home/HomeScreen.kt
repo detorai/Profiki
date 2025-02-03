@@ -1,6 +1,6 @@
 package com.example.test4.presentation.home
 
-import androidx.compose.foundation.Image
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,29 +21,20 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalAbsoluteTonalElevation
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Yellow
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -70,10 +61,10 @@ import com.example.test4.presentation.ui.theme.Block
 import com.example.test4.presentation.ui.theme.Red
 import com.example.test4.presentation.ui.theme.TextColor
 
-class HomeScreen: Screen {
+data class HomeScreen(private val context: Context): Screen {
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel { HomeViewModel() }
+        val viewModel = rememberScreenModel { HomeViewModel(context = context) }
         Home(viewModel)
 
     }
@@ -175,7 +166,7 @@ class HomeScreen: Screen {
                                         shape = RoundedCornerShape(8.dp)
                                     )
                                     .clickable {
-                                        navigator.push(ListScreen(categoryScreen = category, screen = ScreenType.CATEGORY))
+                                        navigator.push(ListScreen(categoryScreen = category, screen = ScreenType.CATEGORY, context = context))
                                     },
                                 contentAlignment = Alignment.Center,
                             ) {
@@ -198,7 +189,7 @@ class HomeScreen: Screen {
                     state = true,
                     modifier = Modifier.padding(top = 24.dp),
                     onTextClick = {
-                        navigator.push(ListScreen(screen = ScreenType.POPULAR))
+                        navigator.push(ListScreen(screen = ScreenType.POPULAR, context = context))
                     }
                 )
                 LazyHorizontalGrid(
@@ -213,8 +204,9 @@ class HomeScreen: Screen {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             CommonShoesCard(
-                                products = shoes,
+                                shoes = shoes,
                                 onAdd = {
+
                                 },
                                 onFavourite = {
                                     viewModel.inFavourite(index, !shoes.isFavourite)
@@ -295,7 +287,9 @@ class HomeScreen: Screen {
                     }
                     NavigationBarItem(
                         selected = false,
-                        onClick = {},
+                        onClick = {
+                            navigator.push(ListScreen(screen = ScreenType.FAVOURITE, context = context))
+                        },
                         icon = {
                             Icon(
                                 painter = painterResource(i),

@@ -1,5 +1,6 @@
 package com.example.test4.presentation.sign_in
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,14 +41,16 @@ import com.example.test4.presentation.ui.theme.logInString
 import com.example.test4.presentation.ui.theme.passwordString
 import com.example.test4.presentation.ui.theme.repair
 
-class SignInScreen: Screen {
+data class SignInScreen(
+    private val context: Context
+): Screen {
     @Composable
     override fun Content() {
         val viewModel = rememberScreenModel { SignInViewModel() }
         val state = viewModel.signInState.collectAsState().value
         val navigator = LocalNavigator.currentOrThrow
         SignIn(viewModel)
-        if (state.isSignIn) navigator.push(HomeScreen())
+        if (state.isSignIn) navigator.push(HomeScreen(context))
     }
     @Composable
     fun SignIn(viewModel: SignInViewModel) {

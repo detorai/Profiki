@@ -11,6 +11,7 @@ data class Shoes(
     val category: List<Category> = emptyList(),
     val description: String,
     val image: String,
+    val count: Int = 0,
     var inBucket: Boolean = false,
     var isFavourite: Boolean = false
 )

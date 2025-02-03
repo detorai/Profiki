@@ -1,5 +1,6 @@
 package com.example.test4.presentation.cat_pop_favour
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,12 +42,13 @@ import com.example.test4.presentation.ui.theme.Block
 import com.example.test4.presentation.ui.theme.TextColor
 
 data class ListScreen(
-    val screen: ScreenType,
-    val categoryScreen: Category? = null
+    var screen: ScreenType,
+    val categoryScreen: Category? = null,
+    private val context: Context
 ): Screen {
     @Composable
     override fun Content() {
-    val viewModel = rememberScreenModel { CatPopViewModel(screen, categoryScreen) }
+    val viewModel = rememberScreenModel { CatPopViewModel(screen, categoryScreen, context) }
         ProductList(viewModel)
     }
     @Composable
@@ -61,8 +63,9 @@ data class ListScreen(
                     label = state.label,
                     modifier = Modifier.padding(top = 48.dp),
                     onFavourite = {
-
+                        navigator.push(ListScreen(screen = ScreenType.FAVOURITE, context = context))
                     },
+                    screenType = screen
                 )
             },
             content = { padding ->
@@ -122,7 +125,7 @@ data class ListScreen(
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 CommonShoesCard(
-                                    products = shoes,
+                                    shoes = shoes,
                                     onAdd = {
                                     },
                                     onFavourite = {

@@ -1,5 +1,6 @@
 package com.example.test4.presentation.cat_pop_favour
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -13,9 +14,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CatPopViewModel(type: ScreenType, category: Category? = null): ScreenModel {
+class CatPopViewModel(type: ScreenType, category: Category? = null, private val context: Context): ScreenModel {
     val categoryUseCase = CategoryUseCase()
-
+    val shoesUseCase = ShoesUseCase(context)
     val shoesList = mutableStateListOf<Shoes>()
     val screenState = MutableStateFlow(CatPopScreenState())
 
@@ -30,7 +31,28 @@ class CatPopViewModel(type: ScreenType, category: Category? = null): ScreenModel
             ScreenType.CATEGORY -> {
                 getAllCategory()
             }
-            ScreenType.FAVOURITE -> {}
+            ScreenType.FAVOURITE -> {
+                screenState.update {
+                    it.copy(label = "Избранное")
+                }
+                screenModelScope.launch {
+                    shoesUseCase.getAllShoesLocal().collect{shoes ->
+                            when (shoes) {
+                                is ResponseState.Error -> {}
+                                is ResponseState.Success<*> -> {
+                                    shoesList.apply {
+                                        clear()
+                                        addAll(
+                                            shoes.data as List<Shoes>
+                                        )
+                                    }
+                                }
+                                is ResponseState.Loading -> {}
+                                is ResponseState.NetworkError -> {}
+                        }
+                    }
+                }
+            }
         }
         category?.let { category ->
             selectedCategory(category)

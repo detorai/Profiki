@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Test4Theme {
-                Navigator(HomeScreen())
+                Navigator(HomeScreen(applicationContext))
             }
         }
     }
