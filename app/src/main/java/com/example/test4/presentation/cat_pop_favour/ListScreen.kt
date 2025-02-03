@@ -24,9 +24,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,7 +52,12 @@ data class ListScreen(
     @Composable
     override fun Content() {
     val viewModel = rememberScreenModel { CatPopViewModel(screen, categoryScreen, context) }
-        ProductList(viewModel)
+        LaunchedEffect(screen) {
+            viewModel.updateScreen(screen)
+        }
+        key(screen){
+           ProductList(viewModel)
+        }
     }
     @Composable
     fun ProductList(viewModel: CatPopViewModel){
@@ -63,7 +71,9 @@ data class ListScreen(
                     label = state.label,
                     modifier = Modifier.padding(top = 48.dp),
                     onFavourite = {
-                        navigator.push(ListScreen(screen = ScreenType.FAVOURITE, context = context))
+                        navigator.push(
+                            ListScreen(screen = ScreenType.FAVOURITE, context = context)
+                        )
                     },
                     screenType = screen
                 )
@@ -127,9 +137,10 @@ data class ListScreen(
                                 CommonShoesCard(
                                     shoes = shoes,
                                     onAdd = {
+                                        viewModel.inBucket(index, !shoes.inBucket)
                                     },
                                     onFavourite = {
-
+                                        viewModel.inFavourite(index, !shoes.isFavourite )
                                     },
                                 )
                                 if (index < viewModel.shoesList.size - 1) {

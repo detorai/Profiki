@@ -34,9 +34,7 @@ class ShoesUseCase(context: Context) {
             emit(ResponseState.Error(e.message.toString()))
         }
     }
-    suspend fun inBucket(shoes: Shoes) = flow<ResponseState> {
-        return@flow try {
-            emit(ResponseState.Loading())
+    suspend fun inBucket(shoes: Shoes) {
             val result = shoesDb.insertAll(
                 LocalShoes(
                     id = shoes.id,
@@ -48,10 +46,6 @@ class ShoesUseCase(context: Context) {
                     count = shoes.count
                 )
             )
-            emit(ResponseState.Success(data = true))
-        } catch (e:Exception){
-            emit(ResponseState.Error(e.message.toString()))
-        }
     }
     suspend fun inFavourite(shoes: Shoes) {
         val result = shoesDb.insertAll(
@@ -64,13 +58,31 @@ class ShoesUseCase(context: Context) {
                 isFavourite = shoes.isFavourite
             )
         )
-
     }
 
-    suspend fun getAllShoesLocal() = flow<ResponseState> {
+    suspend fun getAllFavouriteLocal() = flow<ResponseState> {
         return@flow try {
             emit(ResponseState.Loading())
             val result = shoesDb.favouriteAll().collect { it ->
+                emit(ResponseState.Success(data = it.map {
+                    Shoes(
+                        id = it.id,
+                        name = it.name,
+                        cost = it.cost,
+                        description = it.description,
+                        image = it.image,
+                        isFavourite = it.isFavourite
+                    )
+                }))
+            }
+        } catch (e:Exception){
+            emit(ResponseState.Error(e.message.toString()))
+        }
+    }
+    suspend fun getAllBucketShoesLocal() = flow<ResponseState> {
+        return@flow try {
+            emit(ResponseState.Loading())
+            val result = shoesDb.bucketAll().collect { it ->
                 emit(ResponseState.Success(data = it.map {
                     Shoes(
                         id = it.id,

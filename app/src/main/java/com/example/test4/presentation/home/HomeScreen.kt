@@ -206,7 +206,7 @@ data class HomeScreen(private val context: Context): Screen {
                             CommonShoesCard(
                                 shoes = shoes,
                                 onAdd = {
-
+                                    viewModel.inFavourite(index, !shoes.inBucket)
                                 },
                                 onFavourite = {
                                     viewModel.inFavourite(index, !shoes.isFavourite)

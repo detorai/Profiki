@@ -1,5 +1,6 @@
 package com.example.test4
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -12,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Rule
+import org.junit.runner.manipulation.Ordering.Context
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -23,13 +25,16 @@ class ExampleInstrumentedTest {
 
     @get:Rule
     val compose = createComposeRule()
+
+
+
     @Test
     fun checkDialogBeforeEmptyPassword() {
 
         val viewModel = SignInViewModel()
         viewModel.auth("123@123.com", "")
         compose.setContent {
-            SignInScreen().SignIn(viewModel)
+            SignInScreen(LocalContext.current).SignIn(viewModel)
         }
         compose.onNodeWithText("Password is empty").assertIsDisplayed()
     }
@@ -41,7 +46,7 @@ class ExampleInstrumentedTest {
         val viewModel = SignInViewModel()
         viewModel.auth("", "")
         compose.setContent {
-            SignInScreen().SignIn(viewModel)
+            SignInScreen(LocalContext.current).SignIn(viewModel)
         }
         compose.onNodeWithText("Email is empty").assertIsDisplayed()
     }

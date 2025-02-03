@@ -39,6 +39,12 @@ class HomeViewModel(private val context: Context): ScreenModel {
             shoesUseCase.inFavourite(shoesList[index])
         }
     }
+    fun inBucket(index: Int, state: Boolean){
+        screenModelScope.launch(Dispatchers.IO) {
+            shoesList.set(index, shoesList[index].copy(inBucket = state))
+            shoesUseCase.inBucket(shoesList[index])
+        }
+    }
 
     fun getSales(){
         screenModelScope.launch {

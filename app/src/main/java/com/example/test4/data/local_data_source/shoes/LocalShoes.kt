@@ -28,14 +28,18 @@ interface ShoesDao {
     @Query("SELECT * FROM LocalShoes WHERE shoes_isFavourite = true")
     fun favouriteAll(): Flow<List<LocalShoes>>
 
+    @Query("SELECT * FROM LocalShoes WHERE shoes_isBucket = true")
+    fun bucketAll(): Flow<List<LocalShoes>>
+
     @Query("UPDATE LocalShoes SET shoes_isFavourite = :isFavourite WHERE id = :id")
     fun inFavourite(isFavourite: Boolean, id: Long)
 
     @Insert
     fun insertAll(shoes: LocalShoes)
 
-    @Query("UPDATE LocalShoes SET shoes_count = shoes_count+1,  shoes_isBucket = :isBucket WHERE id = :id")
-    fun inBucket(isBucket: Boolean, id: Long)
+    @Query("DELETE FROM LocalShoes")
+    fun deleteAll()
 
-
+    @Query("UPDATE LocalShoes SET shoes_count = shoes_count+1,  shoes_isBucket = :inBucket WHERE id = :id")
+    fun inBucket(inBucket: Boolean, id: Long)
 }

@@ -74,7 +74,6 @@ fun CommonShoesCard(
                 contentDescription = "icon",
                 tint = Color.Unspecified
             )
-            println("card ${shoes.isFavourite}")
         }
         AsyncImage(
             model = shoes.image,
